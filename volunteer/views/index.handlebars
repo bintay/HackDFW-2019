@@ -17,7 +17,11 @@
                <h2>Getting people back on their feet since Saturday</h2>
             </div>
             <div class="col2-2">
-               <a href="/login" class='right'>Login</a>
+               {{#if loggedOut}}
+                  <a href="/login" class='right'>Login</a>
+               {{else}}
+                  <a href="/logout/" class='right'>Log Out</a>
+               {{/if}}
             </div>
          </div>
       </div>
@@ -27,10 +31,10 @@
          <div class="card" v-for='event in volunteer'>
             <div class="grid2">
                <div class="col1">
-                  <span class='title'>{{ event.title }}</span><br><br>
-                  <span class='grey'>{{ event.location }}</span><br>
-                  <span class="grey">{{ event.date }}</span><br><br>
-                  <span class="grey">{{ event.people }} / {{ event.needPeople }} volunteers signed up</span>
+                  <span class='title'>\{{ event.title }}</span><br><br>
+                  <span class='grey'>\{{ event.location }}</span><br>
+                  <span class="grey">\{{ event.date }}</span><br><br>
+                  <span class="grey">\{{ event.people }} / \{{ event.needPeople }} volunteers signed up</span>
                   <br>
                   <br>
                </div>
@@ -39,7 +43,7 @@
                   <br>
                   <br>
                   {{#if loggedOut}}
-                     <a class='button' href='/login'>Sign In to Volunteer</a>
+                     <button class='button' disabled>Sign In to Volunteer</button>
                   {{else}}
                      <button class="button">Volunteer</button>
                   {{/if}}

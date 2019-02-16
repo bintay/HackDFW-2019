@@ -84,6 +84,10 @@ p, span, input, label, textarea, div {
    color: #242423;
 }
 
+a {
+   color: #db5461;
+}
+
 .grid3 {
    display: grid;
    grid-template-columns: 30% 5% 30% 5% 30%;
@@ -96,7 +100,7 @@ p, span, input, label, textarea, div {
 
 .grid2-2 {
    display: grid;
-   grid-template-columns: 80% 5% 15%;
+   grid-template-columns: 75% 5% 20%;
 }
 
 .col1 {
@@ -134,6 +138,11 @@ p, span, input, label, textarea, div {
    margin: 0 auto;
 }
 
+.small-wrap {
+   width: 40%;
+   margin: 0 auto;
+}
+
 .card {
    background: #fafafa;
    width: calc(100% - 40px);
@@ -141,6 +150,10 @@ p, span, input, label, textarea, div {
    padding: 20px;
    border-radius: 10px;
    margin-top: 20px;
+}
+
+input {
+   -webkit-appearance:none;
 }
 
 .button {
@@ -161,6 +174,16 @@ p, span, input, label, textarea, div {
    background: #bb2736;
 }
 
+.button:disabled {
+   background: #686963;
+   cursor: default;
+}
+
+.button:disabled:active {
+   background: #585953;
+   cursor: default;
+}
+
 footer {
    background: #686963;
    width: 100%;
@@ -178,12 +201,48 @@ footer {
    font-size: 24px;
 }
 
+form {
+   margin-top: 20px;
+   width: 100%;
+   margin-bottom: 20px;
+}
+
+label {
+   width: 100px;
+   display: inline-block;
+   margin-bottom: 20px;
+}
+
+input {
+   width: calc(100% - 124px);
+   padding: 10px;
+   border-radius: 10px;
+   border: none;
+   box-shadow: 0 1px 3px #24242366;
+}
+
+input[type='submit'] {
+   width: calc(100%);
+   background: #db5461;
+   color: #fafafa;
+}
+
+.error {
+   width: calc(100% - 20px);
+   padding: 10px;
+   border-radius: 10px;
+   box-shadow: 0 1px 3px #24242366;
+   background: #db5461;
+   color: #fafafa;
+   margin-top: 20px;
+}
+
 #app {
 
 }
 
 @media screen and (max-width: 800px) {
-   .wrap {
+   .wrap, .small-wrap {
       width: 90%;
    }
 

@@ -35,14 +35,10 @@
                   <br>
                </div>
                <div class="col2">
-                  \{{ event.description }}
+                  {{ event.description }}
                   <br>
                   <br>
-                  {{#if loggedOut}}
-                     <a class='button' href='/login'>Sign In to Volunteer</a>
-                  {{else}}
-                     <button class="button">Volunteer</button>
-                  {{/if}}
+                  <button class="button">Volunteer</button>
                </div>
             </div>
          </div>
