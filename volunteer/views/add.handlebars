@@ -38,17 +38,22 @@
    <section>
       <div class="small-wrap">
          {{#each errors}}
-            <div class="error">Error logging in: {{this}}</div>
+            <div class="error">Error registering: {{this}}</div>
          {{/each}}
-         <form action="/login" method='POST'>
+         <form action="/add" method='POST'>
             <input type="hidden" name="_csrf" value={{{csrfToken}}} />
-            <label for="email">Email </label>
-            <input type="email" value='' name='email' /><br>
-            <label for="password">Password</label>
-            <input type="password" name="password" value="" /><br>
-            <input type='submit' name='submit' value='Login' />
+            <label for="title">Title </label>
+            <input type="text" value='' name='title' /><br>
+            <label for="desc">Description </label>
+            <textarea name='desc'></textarea><br>
+            <label for="location">Location</label>
+            <input type="text" name="location" value="" /><br>
+            <label for="date">Date</label>
+            <input type="date" name="date" value="" /><br>
+            <label for="people">People</label>
+            <input type="number" name="people" value="" /><br>
+            <input type='submit' name='submit' value='Create' />
          </form>
-         <p>Need an account? <a href="/register">Register here</a></p>
       </div>
    </section>
    <footer>

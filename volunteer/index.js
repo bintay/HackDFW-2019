@@ -15,6 +15,7 @@ const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error: '));
 db.once('open', () => console.log('Database connected'));
 const User = require('./models/User.js');
+const Volunteering = require('./models/Volunteering.js');
 
 // CSRF Protection
 const csurf = require('csurf');
@@ -60,17 +61,25 @@ app.use(function (req, res, next) {
 
 // index
 app.get('/', function (req, res) {
-   res.render('index', { loggedOut: req.session.userid == undefined });
+   let signedUp = {};
+   
+   if (req.user) {
+      for (let i = 0; i < req.user.volunteering.length; ++i) {
+         signedUp[req.user.volunteering[i]] = true;
+      }
+   }
+
+   res.render('index', { signedUp: JSON.stringify(signedUp).replace(/"/g, "'"), canAdd: req.user && req.user.canAdd, loggedOut: req.session.userid == undefined });
 });
 
 // login
 app.get('/login', redirectIfLoggedIn, csrfProtection, function (req, res) {
-   res.render('login', {loggedOut: req.session.userid == undefined, csrfToken: req.csrfToken()});
+   res.render('login', {canAdd: req.user && req.user.canAdd, loggedOut: req.session.userid == undefined, csrfToken: req.csrfToken()});
 });
 
 // register
 app.get('/register', redirectIfLoggedIn, csrfProtection, function (req, res) {
-   res.render('register', {loggedOut: req.session.userid == undefined, csrfToken: req.csrfToken()});
+   res.render('register', {canAdd: req.user && req.user.canAdd, loggedOut: req.session.userid == undefined, csrfToken: req.csrfToken()});
 });
 
 // logout
@@ -87,6 +96,30 @@ app.get('/logout/', redirectIfLoggedOut, function (req, res) {
    }
 });
 
+// profile
+app.get('/profile', redirectIfLoggedOut, function (req, res) {
+   Volunteering.find({_id: {$in: req.user.volunteering}}, function (err, vols) {
+      if (err) console.log(err);
+      vols = vols.map(vols => {
+         vols.dateString = (new Date(vols.date)).toDateString();
+         return vols;
+      });
+      res.render('profile', { canAdd: req.user && req.user.canAdd, loggedOut: req.session.userid == undefined, name: req.user.name, email: req.user.email, volunteering: vols });
+   })
+});
+
+// add volunteering
+app.get('/add', redirectIfLoggedOut, csrfProtection, function (req, res) {
+   res.render('add', { canAdd: req.user && req.user.canAdd, loggedOut: req.session.userid == undefined, csrfToken: req.csrfToken() });
+});
+
+app.get('/api/volunteerings/', function (req, res) {
+   Volunteering.find({}, function (err, vols) {
+      if (err) console.log(err);
+      res.send(JSON.stringify(vols));
+   });
+});
+
 /*
    Post requests
 */
@@ -101,7 +134,7 @@ app.post('/login/', redirectIfLoggedIn, csrfProtection, function (req, res) {
       var user = users[0];
 
       if (user == null) {
-         res.render('login', { loggedOut: req.session.userid == undefined, errors: ['Incorrect email.'], csrfToken: req.csrfToken() })
+         res.render('login', { canAdd: req.user && req.user.canAdd, loggedOut: req.session.userid == undefined, errors: ['Incorrect email.'], csrfToken: req.csrfToken() })
       } else {
          bcrypt.compare(req.body.password, user.password, function (err, match) {
             if (err) {
@@ -111,7 +144,7 @@ app.post('/login/', redirectIfLoggedIn, csrfProtection, function (req, res) {
                req.session.userid = user._id;
                res.redirect('/');
             } else {
-               res.render('login', { loggedOut: req.session.userid == undefined, errors: ['Incorrect password.'], csrfToken: req.csrfToken() });
+               res.render('login', { canAdd: req.user && req.user.canAdd, loggedOut: req.session.userid == undefined, errors: ['Incorrect password.'], csrfToken: req.csrfToken() });
             }
          });
       }
@@ -140,7 +173,7 @@ app.post('/register/', redirectIfLoggedIn, csrfProtection, function (req, res) {
       }
 
       if (signupErrors.length > 0) {
-         res.render('register', { loggedOut: req.session.userid == undefined, errors: signupErrors, csrfToken: req.csrfToken() });
+         res.render('register', { canAdd: req.user && req.user.canAdd, loggedOut: req.session.userid == undefined, errors: signupErrors, csrfToken: req.csrfToken() });
       } else {
          bcrypt.hash(req.body.password, null, null, function (err, hash) {
             User.create({ password: hash, email: req.body.email, name: req.body.name }, function (err, user) {
@@ -152,6 +185,64 @@ app.post('/register/', redirectIfLoggedIn, csrfProtection, function (req, res) {
                res.redirect('/');
             });
          });
+      }
+   });
+});
+
+// new volunteering
+app.post('/add', redirectIfLoggedOut, csrfProtection, function (req, res) {
+   let errors = [];
+
+   if (!req.user.canAdd) res.redirect('/');
+
+   if (req.body.title == '') {
+      errors.push('Title cannot be empty');
+   }
+
+   if (req.body.desc == '') {
+      errors.push('Description cannot be empty');
+   }
+
+   if (req.body.location == '') {
+      errors.push('Location cannot be empty');
+   }
+
+   if (req.body.people < 1) {
+      errors.push('Should have at least one person');
+   }
+
+   if (errors.length == 0) {
+      Volunteering.create({ title: req.body.title, description: req.body.desc, location: req.body.location, date: req.body.date, needPeople: req.body.people, people: 0 }, function (err, vol) {
+         if (err) console.log(err);
+
+         res.redirect('/');
+      });
+   } else {
+      res.render('add', { errors: errors, canAdd: req.user && req.user.canAdd, loggedOut: req.session.userid == undefined, csrfToken: req.csrfToken() });
+   }
+});
+
+// join volunteering
+
+app.post('/join', redirectIfLoggedOut, function (req, res) {
+   let errors = [];
+   Volunteering.find({_id: req.body.volID }, function (err, vols) {
+      let volunteering = vols[0];
+      if (volunteering.people >= volunteering.needPeople) {
+         errors.push('Volunteering full');
+      }
+
+      if (errors.length == 0) {
+         Volunteering.findOneAndUpdate({_id: req.body.volID}, {$inc: {people: 1}}, function (err, vols) {
+            if (err) console.log(err);
+            console.log(vols);
+            User.updateOne({_id: req.user._id}, {$push: {volunteering: vols._id}}, function (err, user) {
+               if (err) console.log(err);
+               res.send(JSON.stringify({done: true}));
+            });
+         });
+      } else {
+         res.send(JSON.stringify(errors));
       }
    });
 });

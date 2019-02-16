@@ -61,6 +61,11 @@ header {
    height: 100px;
 }
 
+h2 {
+   margin-top: 20px;
+   font-size: 30px;
+}
+
 header h1 {
    line-height: 70px;
    vertical-align: middle;
@@ -71,7 +76,12 @@ header h1 {
 
 header h2 {
    color: #fafafa;
+   font-size: inherit;
+   margin-top: 0;
+}
 
+header span {
+   color: #fafafa;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -88,6 +98,15 @@ a {
    color: #db5461;
 }
 
+.no-a {
+   color: #fafafa;
+   text-decoration: none;
+}
+
+.right a {
+   color: #fafafa;
+}
+
 .grid3 {
    display: grid;
    grid-template-columns: 30% 5% 30% 5% 30%;
@@ -100,7 +119,7 @@ a {
 
 .grid2-2 {
    display: grid;
-   grid-template-columns: 75% 5% 20%;
+   grid-template-columns: 45% 5% 50%;
 }
 
 .col1 {
@@ -180,7 +199,7 @@ input {
 }
 
 .button:disabled:active {
-   background: #585953;
+   background: #686963;
    cursor: default;
 }
 
@@ -213,7 +232,7 @@ label {
    margin-bottom: 20px;
 }
 
-input {
+input, textarea {
    width: calc(100% - 124px);
    padding: 10px;
    border-radius: 10px;
@@ -221,10 +240,20 @@ input {
    box-shadow: 0 1px 3px #24242366;
 }
 
+textarea {
+   resize: vertical;
+}
+
 input[type='submit'] {
    width: calc(100%);
    background: #db5461;
    color: #fafafa;
+   cursor: pointer;
+   transition: background 0.2s;
+}
+
+input[type='submit']:active {
+   background: #bb2736;
 }
 
 .error {
@@ -237,8 +266,27 @@ input[type='submit'] {
    margin-top: 20px;
 }
 
-#app {
+#app, section {
+   min-height: calc(100vh - 220px);
+}
 
+@media screen and (min-width: 801px) and (max-width: 1320px) {
+   header {
+      height: 150px;
+   }
+
+   .grid2-2 {
+      grid-template-columns: 100%;
+   }
+
+   .col2-2 {
+      grid-column: 1;
+   }
+
+   .right {
+      float: none;
+      line-height: 50px;
+   }
 }
 
 @media screen and (max-width: 800px) {
@@ -261,11 +309,19 @@ input[type='submit'] {
    }
 
    header h1 {
-      font-size: 30px;
+      font-size: 24px;
       line-height: 100px;
    }
 
    header h2 {
+      display: none;
+   }
+
+   .right {
+      font-size: 1em;
+   }
+
+   .no-mobile {
       display: none;
    }
 }
