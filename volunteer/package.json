@@ -1,0 +1,15 @@
+{
+  "name": "volunteer",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Ben Taylor",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^3.0.4",
+    "express": "^4.16.4"
+  }
+}
