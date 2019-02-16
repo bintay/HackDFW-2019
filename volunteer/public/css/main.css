@@ -1,0 +1,271 @@
+/* http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+   margin: 0;
+   padding: 0;
+   border: 0;
+   font-size: 100%;
+   font: inherit;
+   vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+   display: block;
+}
+body {
+   line-height: 1;
+}
+ol, ul {
+   list-style: none;
+}
+blockquote, q {
+   quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+   content: '';
+   content: none;
+}
+table {
+   border-collapse: collapse;
+   border-spacing: 0;
+}
+
+/*
+   Begin my code
+*/
+
+html, body {
+   background: #fafafa;
+   line-height: 1.2em;
+}
+
+header {
+   background: #8aa29e;
+   height: 100px;
+}
+
+header h1 {
+   line-height: 70px;
+   vertical-align: middle;
+   font-size: 50px;
+   font-weight: 700;
+   color: #fafafa;
+}
+
+header h2 {
+   color: #fafafa;
+
+}
+
+h1, h2, h3, h4, h5, h6 {
+   font-family: 'Quicksand', serif;
+   color: #242423;
+}
+
+p, span, input, label, textarea, div {
+   font-family: 'Source Sans Pro', sans-serif;
+   color: #242423;
+}
+
+a {
+   color: #db5461;
+}
+
+.grid3 {
+   display: grid;
+   grid-template-columns: 30% 5% 30% 5% 30%;
+}
+
+.grid2 {
+   display: grid;
+   grid-template-columns: 47.5% 5% 47.5%;
+}
+
+.grid2-2 {
+   display: grid;
+   grid-template-columns: 75% 5% 20%;
+}
+
+.col1 {
+   grid-column: 1;
+}
+
+.col2, .col2-2 {
+   grid-column: 3;
+}
+
+.col3 {
+   grid-column: 5;
+}
+
+.grey {
+   color: #686963;
+}
+
+.right {
+   text-align: right;
+   float: right;
+   color: #fafafa;
+   font-size: 20px;
+   line-height: 100px;
+   vertical-align: middle;
+}
+
+.title {
+   font-size: 24px;
+   line-height: 1.4em;
+}
+
+.wrap {
+   width: 70%;
+   margin: 0 auto;
+}
+
+.small-wrap {
+   width: 40%;
+   margin: 0 auto;
+}
+
+.card {
+   background: #fafafa;
+   width: calc(100% - 40px);
+   box-shadow: 0 3px 5px #24242366;
+   padding: 20px;
+   border-radius: 10px;
+   margin-top: 20px;
+}
+
+input {
+   -webkit-appearance:none;
+}
+
+.button {
+   background: #db5461;
+   display: block;
+   padding: 15px;
+   border-radius: 5px;
+   color: #fafafa;
+   text-decoration: none;
+   text-align: center;
+   transition: background 0.2s;
+   border: none;
+   width: 100%;
+   cursor: pointer;
+}
+
+.button:active {
+   background: #bb2736;
+}
+
+.button:disabled {
+   background: #686963;
+   cursor: default;
+}
+
+.button:disabled:active {
+   background: #585953;
+   cursor: default;
+}
+
+footer {
+   background: #686963;
+   width: 100%;
+   height: 100px;
+   margin-top: 20px;
+}
+
+.center {
+   text-align: center;
+   margin: 0 auto;
+   vertical-align: middle;
+   line-height: 100px;
+   color: #fafafa;
+   font-family: 'Quicksand', sans-serif;
+   font-size: 24px;
+}
+
+form {
+   margin-top: 20px;
+   width: 100%;
+   margin-bottom: 20px;
+}
+
+label {
+   width: 100px;
+   display: inline-block;
+   margin-bottom: 20px;
+}
+
+input {
+   width: calc(100% - 124px);
+   padding: 10px;
+   border-radius: 10px;
+   border: none;
+   box-shadow: 0 1px 3px #24242366;
+}
+
+input[type='submit'] {
+   width: calc(100%);
+   background: #db5461;
+   color: #fafafa;
+}
+
+.error {
+   width: calc(100% - 20px);
+   padding: 10px;
+   border-radius: 10px;
+   box-shadow: 0 1px 3px #24242366;
+   background: #db5461;
+   color: #fafafa;
+   margin-top: 20px;
+}
+
+#app {
+
+}
+
+@media screen and (max-width: 800px) {
+   .wrap, .small-wrap {
+      width: 90%;
+   }
+
+   .grid3 {
+      display: grid;
+      grid-template-columns: 100%;
+   }
+
+   .grid2 {
+      display: grid;
+      grid-template-columns: 100%;
+   }
+
+   .col1, .col2, .col3 {
+      grid-column: 1;
+   }
+
+   header h1 {
+      font-size: 30px;
+      line-height: 100px;
+   }
+
+   header h2 {
+      display: none;
+   }
+}
