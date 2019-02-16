@@ -1,4 +1,4 @@
-const PORT = 4321;
+const PORT = process.argv[2] || 4321;
 
 // Express Config
 const express = require('express');
