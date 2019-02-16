@@ -35,22 +35,36 @@
          </div>
       </div>
    </header>
-   <section>
-      <div class="small-wrap">
-         {{#each errors}}
-            <div class="error">Error logging in: {{this}}</div>
+   <div id="app">
+      <div class="wrap">
+         <h2>Information</h2>
+         <div class="card">
+            <p>
+               Name: {{name}} <br>
+               Email: {{email}}
+            </p>
+         </div>
+         <h2>Volunteering You've Signed Up For</h2><br>
+         <h3>We'll send you reminders via email.</h3>
+         {{#each volunteering}}
+            <div class="card">
+            <div class="grid2">
+               <div class="col1">
+                  <span class='title'>{{ this.title }}</span><br><br>
+                  <span class='grey'>{{ this.location }}</span><br>
+                  <span class="grey">{{ this.dateString }}</span><br><br>
+                  <span class="grey">{{ this.people }} / {{ this.needPeople }} volunteers signed up</span>
+                  <br>
+                  <br>
+               </div>
+               <div class="col2">
+                  {{ this.description }}
+               </div>
+            </div>
+         </div>
          {{/each}}
-         <form action="/login" method='POST'>
-            <input type="hidden" name="_csrf" value={{{csrfToken}}} />
-            <label for="email">Email </label>
-            <input type="email" value='' name='email' /><br>
-            <label for="password">Password</label>
-            <input type="password" name="password" value="" /><br>
-            <input type='submit' name='submit' value='Login' />
-         </form>
-         <p>Need an account? <a href="/register">Register here</a></p>
       </div>
-   </section>
+   </div>
    <footer>
       <p class="center">&copy; Humanity, 2019 💛</p>
    </footer>

@@ -12,16 +12,25 @@
    <header>
       <div class="wrap">
          <div class="grid2-2">
-            <div class="col1">
-               <h1>Homelessn't 🏡</h1>
-               <h2>Getting people back on their feet since Saturday</h2>
-            </div>
+            <a href="/" class='no-a'>
+               <div class="col1">
+                  <h1>Homelessn't 🏡</h1>
+                  <h2>Getting people back on their feet since Saturday</h2>
+               </div>
+            </a>
             <div class="col2-2">
+               <span class='right'>
                {{#if loggedOut}}
                   <a href="/login" class='right'>Login</a>
                {{else}}
-                  <a href="/logout/" class='right'>Log Out</a>
+                  {{#if canAdd}}
+                     <a href='/manage' class='no-mobile'>Manage Libraries</a><span class='no-mobile'> / </span>
+                     <a href='/add' class='no-mobile'>Add Volunteering</a><span class='no-mobile'> / </span><a href="/profile/">Profile</a> / <a href="/logout/">Log Out</a>
+                  {{else}}
+                     <a href="/profile/">Profile</a> / <a href="/logout/">Log Out</a>
+                  {{/if}}
                {{/if}}
+               </span>
             </div>
          </div>
       </div>
@@ -41,7 +50,7 @@
             <input type="password" name="password" value="" /><br>
             <input type='submit' name='submit' value='Login' />
          </form>
-         <p>Have an account? <a href="/login">Log in here</a></p>
+         <p>Have an account? <a href="/login">Login here</a></p>
       </div>
    </section>
    <footer>

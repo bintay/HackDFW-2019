@@ -6,7 +6,8 @@ var userSchema = new Schema({
    name: String,
    password: String,
    email: {type: String, unique: true},
-   volunteering: [ ObjectId ]
+   volunteering: [ ObjectId ],
+   canAdd: { type: Boolean, default: false }
 });
 
 var User = mongoose.model('User', userSchema);
