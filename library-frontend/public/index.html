@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>Library</title>
+   <link href="https://fonts.googleapis.com/css?family=Quicksand:400,700|Source+Sans+Pro" rel="stylesheet" />
+   <style>
+      body, html {
+         margin: 0;
+         padding: 0;
+         background: #8aa29e;
+      }
+
+      #overlay {
+         position: absolute;
+         margin: 0;
+         padding: 0;
+         width: 100%;
+         top: 100px;
+      }
+
+      #message {
+         display: block;
+         width: 50%;
+         margin: 0 auto;
+         padding: 0;
+         text-align: center;
+         font-family: 'Quicksand', sans-serif;
+         background: #fafafa;
+         padding: 20px;
+         border-radius: 10px;
+         box-shadow: 0 3px 3px #0006;
+         opacity: 1;
+         transition: opacity 0.3s;
+      }
+
+      #message.hide {
+         opacity: 0 !important;
+      }
+
+      canvas {
+         display: none;
+      }
+
+      p {
+         display: block;
+         color: #fafafa;
+         font-family: 'Quicksand', sans-serif;
+         margin: 20px auto 0 auto;
+         text-align: center;
+         font-size: 24px;
+      }
+
+      video {
+         display: block;
+         margin: 0 auto;
+         border-radius: 10px;
+         box-shadow: 0 3px 3px #0006;
+         margin-top: 20px;
+      }
+
+      .button {
+         background: #db5461;
+         display: block;
+         padding: 15px;
+         border-radius: 5px;
+         color: #fafafa;
+         text-decoration: none;
+         text-align: center;
+         transition: background 0.2s;
+         border: none;
+         width: 20%;
+         cursor: pointer;
+         margin: 20px auto;
+         font-family: 'Quicksand', sans-serif;
+      }
+
+      .button:active {
+         background: #bb2736;
+      }
+   </style>
+</head>
+<body>
+   <section id="overlay">
+      <h1 id='message' class='hide'>Message</h1>
+   </section>
+   <p>Place the cover of the book in the camera's view</p>
+   <video id='webcam' autoplay='true'></video>
+   <canvas id="canvas"></canvas>
+   <a class='button' href="#" onclick="generateThumbnail()">Check In/Out</a>
+   <div id="thumbnailContainer"></div>
+   <script src='https://cdn.WebRTC-Experiment.com/RecordRTC.js'></script>
+   <script
+  src="https://code.jquery.com/jquery-3.3.1.min.js"
+  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+  crossorigin="anonymous"></script>
+  <script>
+      let webcam = document.querySelector('#webcam');
+      this.loadedPreview = true;
+      if (navigator.mediaDevices.getUserMedia) {       
+         navigator.mediaDevices.getUserMedia({video: true})
+            .then(function(stream) {
+               webcam.srcObject = stream;
+            })
+            .catch(function(err) {
+               console.log('Something went wrong!');
+               console.log(err);
+            });
+      }
+
+      let video = document.getElementById('webcam');
+      let thecanvas = document.getElementById('canvas');
+      let message = document.getElementById('message');
+
+      // video.addEventListener('loadeddata', function() {
+      //    var duration = video.duration;
+      //    var i = 0;
+
+      //    var interval = setInterval(function() {
+      //       video.currentTime = i;
+      //       //generateThumbnail(i);
+      //       i = i+5;
+      //       if (i > duration) clearInterval(interval);
+      //    }, 500);
+      // });
+
+      function generateThumbnail() {     
+         //generate thumbnail URL data
+         var context = thecanvas.getContext('2d');
+         context.drawImage(video, 0, 0, 220, 150);
+         var dataURL = thecanvas.toDataURL();
+
+         // //create img
+         // var img = document.createElement('img');
+         // img.setAttribute('src', dataURL);
+
+         // //append img in container div
+         // document.getElementById('thumbnailContainer').appendChild(img);
+
+         $.post('http://localhost:12345/image/', {image: dataURL}).done(function (res) {
+            const data = JSON.parse(res);
+            message.innerText = data.message;
+            message.classList.remove('hide');
+            setTimeout(() => {
+               message.classList.add('hide');
+            }, 2000)
+         });
+      }
+  </script>
+</body>
+</html>

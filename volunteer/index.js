@@ -45,23 +45,23 @@ const transporter = email.createTransport({
 let boxes = [
    {
       location: '412 Tree Oak Drive', 
-      books: [{title: 'ESL for Spanish Speakers', here: true}, {title: 'Introduction to Web Development', here: true}, {title: 'Building for Beginners', here: false}, {title: 'An Introduction to Machine Learning Blockchains Through Quantum AI: C++ 11.4.2.00 Edition with Applications to Advanced Clustering with Cloud Integration', here: true}],
+      books: [{title: 'ESL for Spanish Speakers', here: true}, {title: 'Introduction to Computer Science', here: true}, {title: 'Building for Beginners', here: false}, {title: 'An Introduction to Machine Learning Blockchains Through Quantum AI: C++ 11.4.2.00 Edition with Applications to Advanced Clustering with Cloud Integration', here: true}],
    },
    {
       location: '9832 Do U Know Way', 
-      books: [{title: 'ESL for Spanish Speakers', here: true}, {title: 'Introduction to Web Development', here: true}, {title: 'Building for Beginners', here: false}, {title: 'An Introduction to Machine Learning Blockchains Through Quantum AI: C++ 11.4.2.00 Edition with Applications to Advanced Clustering with Cloud Integration', here: true}],
+      books: [{title: 'ESL for Spanish Speakers', here: true}, {title: 'Introduction to Computer Science', here: true}, {title: 'Building for Beginners', here: false}, {title: 'An Introduction to Machine Learning Blockchains Through Quantum AI: C++ 11.4.2.00 Edition with Applications to Advanced Clustering with Cloud Integration', here: true}],
    },
    {
       location: '332 Street St', 
-      books: [{title: 'ESL for Spanish Speakers', here: true}, {title: 'Introduction to Web Development', here: true}, {title: 'Building for Beginners', here: false}, {title: 'An Introduction to Machine Learning Blockchains Through Quantum AI: C++ 11.4.2.00 Edition with Applications to Advanced Clustering with Cloud Integration', here: true}],
+      books: [{title: 'ESL for Spanish Speakers', here: true}, {title: 'Introduction to Computer Science', here: true}, {title: 'Building for Beginners', here: false}, {title: 'An Introduction to Machine Learning Blockchains Through Quantum AI: C++ 11.4.2.00 Edition with Applications to Advanced Clustering with Cloud Integration', here: true}],
    },
    {
       location: '8991 Path Rd', 
-      books: [{title: 'ESL for Spanish Speakers', here: true}, {title: 'Introduction to Web Development', here: true}, {title: 'Building for Beginners', here: false}, {title: 'An Introduction to Machine Learning Blockchains Through Quantum AI: C++ 11.4.2.00 Edition with Applications to Advanced Clustering with Cloud Integration', here: true}],
+      books: [{title: 'ESL for Spanish Speakers', here: true}, {title: 'Introduction to Computer Science', here: true}, {title: 'Building for Beginners', here: false}, {title: 'An Introduction to Machine Learning Blockchains Through Quantum AI: C++ 11.4.2.00 Edition with Applications to Advanced Clustering with Cloud Integration', here: true}],
    },
    {
       location: '1423 Oaktree Drive', 
-      books: [{title: 'ESL for Spanish Speakers', here: true}, {title: 'Introduction to Web Development', here: true}, {title: 'Building for Beginners', here: false}, {title: 'An Introduction to Machine Learning Blockchains Through Quantum AI: C++ 11.4.2.00 Edition with Applications to Advanced Clustering with Cloud Integration', here: true}],
+      books: [{title: 'ESL for Spanish Speakers', here: true}, {title: 'Introduction to Computer Science', here: true}, {title: 'Building for Beginners', here: false}, {title: 'An Introduction to Machine Learning Blockchains Through Quantum AI: C++ 11.4.2.00 Edition with Applications to Advanced Clustering with Cloud Integration', here: true}],
    },
 ];
 
@@ -321,6 +321,12 @@ DFW Homelessn't`
          res.send(JSON.stringify(errors));
       }
    });
+});
+
+app.post('/api/toggle/:lib/:id', function (req, res) {
+   res.setHeader("Access-Control-Allow-Origin", "*");
+   boxes[req.params.lib].books[req.params.id].here = !boxes[req.params.lib].books[req.params.id].here;
+   res.send(JSON.stringify({book: boxes[req.params.lib].books[req.params.id].title , checked: boxes[req.params.lib].books[req.params.id].here ? 'in' : 'out'}));
 });
 
 // Start the server
