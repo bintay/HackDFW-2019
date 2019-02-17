@@ -27,10 +27,10 @@ app.get('/', function (req, res) {
 app.post('/image/', type, function (req, res) {
    res.setHeader("Access-Control-Allow-Origin", "*");
    const id = uuid();
-   console.log(req.body.image);
-   fs.writeFile(__dirname + '/public/uploads/' + id + ".png", req.body.image.split(',')[1], 'base64', function(err) {
+   fs.writeFile(__dirname + '/public/uploads/' + id + ".png", req.body.image, 'base64', function(err) {
       if (err) console.log(err);
-      request.get('http://localhost:5000/classify/http://localhost:12345/public/uploads/' + id + '.png', function (err, res3, body) {
+      request.get('http://localhost:5000/classify/http://localhost:4321/public/uploads/' + id + '.png', function (err, res3, body) {
+         console.log(body);
          body = parseInt(body);
          if (body == -1) {
             res.send(JSON.stringify({message: 'Error reading book cover. Please try again.'}));
