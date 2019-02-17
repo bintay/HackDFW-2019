@@ -323,6 +323,12 @@ DFW Homelessn't`
    });
 });
 
+app.post('/api/toggle/:lib/:id', function (req, res) {
+   res.setHeader("Access-Control-Allow-Origin", "*");
+   boxes[req.params.lib].books[req.params.id].here = !boxes[req.params.lib].books[req.params.id].here;
+   res.send(JSON.stringify({book: boxes[req.params.lib].books[req.params.id].title , checked: boxes[req.params.lib].books[req.params.id].here ? 'in' : 'out'}));
+});
+
 // Start the server
 app.listen(PORT, function () {
    console.log(`App listening on port ${PORT}`);
