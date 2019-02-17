@@ -171,6 +171,36 @@ a {
    margin-top: 20px;
 }
 
+.image-card {
+   background: #fafafa;
+   width: calc(100%);
+   box-shadow: 0 3px 5px #24242366;
+   border-radius: 10px;
+   margin-top: 20px;
+}
+
+.col {
+   display: inline-block;
+   width: 200px;
+}
+
+hr {
+   height: 1px;
+   background: #000;
+   border: none;
+   outline: none;
+}
+
+.row {
+   padding: 20px;
+   background: none;
+   display: block;
+}
+
+a.row:hover {
+   background: #eee;
+}
+
 input {
    -webkit-appearance:none;
 }
@@ -187,6 +217,10 @@ input {
    border: none;
    width: 100%;
    cursor: pointer;
+}
+
+.red {
+   color: #db5461;
 }
 
 .button:active {

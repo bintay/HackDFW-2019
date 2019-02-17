@@ -30,6 +30,45 @@ const bodyParser = require('body-parser');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+// Nodemailer
+const email = require("nodemailer");
+
+// steal my info please <3
+const transporter = email.createTransport({
+   service: 'gmail',
+   auth: {
+      user: 'homelessnt.dfw@gmail.com',
+      pass: '@$' + 'Home' + '3' + '@$'
+   }
+});
+
+let boxes = [
+   {
+      location: '412 Tree Oak Drive', 
+      books: [{title: 'ESL for Spanish Speakers', here: true}, {title: 'Introduction to Web Development', here: true}, {title: 'Building for Beginners', here: false}, {title: 'An Introduction to Machine Learning Blockchains Through Quantum AI: C++ 11.4.2.00 Edition with Applications to Advanced Clustering with Cloud Integration', here: true}],
+   },
+   {
+      location: '9832 Do U Know Way', 
+      books: [{title: 'ESL for Spanish Speakers', here: true}, {title: 'Introduction to Web Development', here: true}, {title: 'Building for Beginners', here: false}, {title: 'An Introduction to Machine Learning Blockchains Through Quantum AI: C++ 11.4.2.00 Edition with Applications to Advanced Clustering with Cloud Integration', here: true}],
+   },
+   {
+      location: '332 Street St', 
+      books: [{title: 'ESL for Spanish Speakers', here: true}, {title: 'Introduction to Web Development', here: true}, {title: 'Building for Beginners', here: false}, {title: 'An Introduction to Machine Learning Blockchains Through Quantum AI: C++ 11.4.2.00 Edition with Applications to Advanced Clustering with Cloud Integration', here: true}],
+   },
+   {
+      location: '8991 Path Rd', 
+      books: [{title: 'ESL for Spanish Speakers', here: true}, {title: 'Introduction to Web Development', here: true}, {title: 'Building for Beginners', here: false}, {title: 'An Introduction to Machine Learning Blockchains Through Quantum AI: C++ 11.4.2.00 Edition with Applications to Advanced Clustering with Cloud Integration', here: true}],
+   },
+   {
+      location: '1423 Oaktree Drive', 
+      books: [{title: 'ESL for Spanish Speakers', here: true}, {title: 'Introduction to Web Development', here: true}, {title: 'Building for Beginners', here: false}, {title: 'An Introduction to Machine Learning Blockchains Through Quantum AI: C++ 11.4.2.00 Edition with Applications to Advanced Clustering with Cloud Integration', here: true}],
+   },
+];
+
+for (let i = 0; i < boxes.length; ++i) {
+   boxes[i].index = i;
+}
+
 // Sessions
 app.use(session({
    name: 'server-session-cookie-id',
@@ -113,11 +152,28 @@ app.get('/add', redirectIfLoggedOut, csrfProtection, function (req, res) {
    res.render('add', { canAdd: req.user && req.user.canAdd, loggedOut: req.session.userid == undefined, csrfToken: req.csrfToken() });
 });
 
+// view map
+app.get('/manage', function (req, res) {
+   res.render('manage', { canAdd: req.user && req.user.canAdd, loggedOut: req.session.userid == undefined, boxes: boxes });
+});
+
+// api call to get the volunteerings
 app.get('/api/volunteerings/', function (req, res) {
    Volunteering.find({}, function (err, vols) {
       if (err) console.log(err);
       res.send(JSON.stringify(vols));
    });
+});
+
+// library
+app.get('/library/:id', function (req, res) {
+   for (let i = 0; i < boxes.length; ++i) {
+      for (let j = 0; j < boxes[i].books.length; ++j) {
+         if (boxes[i].books[j].here) boxes[i].books[j].hereText = 'Checked In';
+         else boxes[i].books[j].hereText = '<span class="red">Checked Out</span>';
+      }
+   }
+   res.render('library', { canAdd: req.user && req.user.canAdd, loggedOut: req.session.userid == undefined, library: boxes[req.params.id] });
 });
 
 /*
@@ -239,6 +295,26 @@ app.post('/join', redirectIfLoggedOut, function (req, res) {
             User.updateOne({_id: req.user._id}, {$push: {volunteering: vols._id}}, function (err, user) {
                if (err) console.log(err);
                res.send(JSON.stringify({done: true}));
+               const mailOptions = {
+                  from: 'homelessnt.dfw@gmail.com',
+                  to: req.user.email,
+                  subject: 'Volunteering Signup Confirmed',
+                  text:
+`Hi ${req.user.name.split(' ')[0]},
+
+Thank you for signing up for volunteering with us!
+
+You signed up for volunteering on ${vols.date.toDateString()} at ${vols.location}.
+
+Thanks again,
+DFW Homelessn't`
+               }
+
+               transporter.sendMail(mailOptions, function (err, info) {
+                  if (err) console.log(err);
+                  console.log('Sent email');
+                  res.end(JSON.stringify({'sent': true}));
+               });
             });
          });
       } else {

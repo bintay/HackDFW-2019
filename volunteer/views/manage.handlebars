@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>Homelessn't</title>
+   <meta charset='utf8' />
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <link href="https://fonts.googleapis.com/css?family=Quicksand:400,700|Source+Sans+Pro" rel="stylesheet" />
+   <link rel='stylesheet' type='text/css' href='/public/css/main.css' />
+   <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+   <header>
+      <div class="wrap">
+         <div class="grid2-2">
+            <a href="/" class='no-a'>
+               <div class="col1">
+                  <h1>Homelessn't 🏡</h1>
+                  <h2>That ain't it chief</h2>
+               </div>
+            </a>
+            <div class="col2-2">
+               <span class='right'>
+               {{#if loggedOut}}
+                  <a href="/login" class='right'>Login</a>
+               {{else}}
+                  {{#if canAdd}}
+                     <a href='/manage' class='no-mobile'>Manage Libraries</a><span class='no-mobile'> / </span>
+                     <a href='/add' class='no-mobile'>Add Volunteering</a><span class='no-mobile'> / </span><a href="/profile/">Profile</a> / <a href="/logout/">Log Out</a>
+                  {{else}}
+                     <a href="/profile/">Profile</a> / <a href="/logout/">Log Out</a>
+                  {{/if}}
+               {{/if}}
+               </span>
+            </div>
+         </div>
+      </div>
+   </header>
+   <section>
+      <div class="wrap">
+         <img src="/public/images/map.png" alt="" class='image-card' />
+         <div class="card">
+            <div class='row'><span class='col'>ID</span><span class='col'>Location</span></div>
+            <hr>
+         {{#each boxes}}
+            <a href='/library/{{this.index}}' class='row'><span class='col'>{{ this.index }}</span><span class='col'>{{ this.location }}</span></a>
+         {{/each}}
+         </div>
+      </div>
+   </section>
+   <footer>
+      <p class="center">&copy; Humanity, 2019 💛</p>
+   </footer>
+</body>
+</html>
